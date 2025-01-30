@@ -1,10 +1,14 @@
-public class InfiniteKey implements Comparable<InfiniteKey> {
-    protected final int infinity;
-
+public class InfiniteKey<T extends Comparable<T>> implements Comparable<InfiniteKey> {
+    private final int infinity;
+    private T key;
     public InfiniteKey(int infinity) {
         this.infinity = interpretInfinity(infinity);
+        this.key = null;
     }
-
+    public InfiniteKey(T key) {
+        this.key = key;
+        this.infinity = 0;
+    }
 
 
     public static int interpretInfinity(int infinity) {
@@ -15,9 +19,22 @@ public class InfiniteKey implements Comparable<InfiniteKey> {
 
     @Override
     public int compareTo(InfiniteKey other) {
-        return this.infinity - other.infinity;
+        if(other == null) {
+            return 1;
+        }
+
+        int infinityDiff = this.infinity - other.infinity;
+        if (infinityDiff != 0) {
+             return infinityDiff;
+        } else {
+            return this.key.compareTo((T) other.key);
+        }
     }
 
     @Override
-    public String tostring
+    public String toString() {
+        if(this.infinity == 1) return "inf";
+        if(this.infinity == -1) return "-inf";
+        return "notinf";
+    }
 }

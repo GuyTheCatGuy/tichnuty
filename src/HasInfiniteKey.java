@@ -1,4 +1,4 @@
-public class HasInfiniteKey {
+public class HasInfiniteKey<T> {
     private InfiniteKey key;
     public HasInfiniteKey(InfiniteKey key) {
         this.key = key;

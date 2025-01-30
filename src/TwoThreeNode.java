@@ -1,18 +1,14 @@
-public class TwoThreeNode<T extends InfiniteKey, E extends HasInfiniteKey>{
-    private InfiniteKey key;
+public class TwoThreeNode<T extends Comparable<T>, E>{
+    private InfiniteKey<T> key;
     private TwoThreeNode<T, E> left;
     private TwoThreeNode<T, E> middle;
     private TwoThreeNode<T, E> right;
     private TwoThreeNode<T, E> parent;
 
 
-    private TwoThreeNode(HasInfiniteKey value, TwoThreeNode<T, E> left, TwoThreeNode<T, E> middle, TwoThreeNode<T, E> right,
+    private TwoThreeNode(InfiniteKeyValue<T, E> keyVal, TwoThreeNode<T, E> left, TwoThreeNode<T, E> middle, TwoThreeNode<T, E> right,
                          TwoThreeNode<T, E> parent) {
-        if(value != null) {
-            this.key = value.getKey();
-        } else{
-            this.key = null;
-        }
+        this.key = keyVal.getKey();
         this.left = left;
         this.middle = middle;
         this.right = right;
@@ -21,26 +17,23 @@ public class TwoThreeNode<T extends InfiniteKey, E extends HasInfiniteKey>{
 
 
     public TwoThreeNode(){
-        this(null, null, null, null, null);
+        this(new InfiniteKeyValue<T, E>(1), null, null, null, null);
     }
 
 
     public TwoThreeNode(int infinity) {
-        this(null, null, null, null, null);
-        this.key = new InfiniteKey(infinity);
+        this(new InfiniteKeyValue<>(infinity), null, null, null, null);
     }
 
 
     public TwoThreeNode(int infinity, TwoThreeNode<T, E> parent) {
-        this(null, null, null, null, parent);
-        this.key = new InfiniteKey(infinity);
+        this(new InfiniteKeyValue<>(infinity), null, null, null, parent);
     }
 
-    // When children specified - assume is not leaf
-    public TwoThreeNode(HasInfiniteKey value, TwoThreeNode<T, E> left, TwoThreeNode<T, E> middle, TwoThreeNode<T, E> right) {
+    public TwoThreeNode(E value, TwoThreeNode<T, E> left, TwoThreeNode<T, E> middle, TwoThreeNode<T, E> right) {
+
         this(value, left, middle, right, null);
     }
-
 
     //
     public TwoThreeNode(HasInfiniteKey value, TwoThreeNode<T, E> parent) {
@@ -72,7 +65,7 @@ public class TwoThreeNode<T extends InfiniteKey, E extends HasInfiniteKey>{
         }
         this.middle = middle;
 
-        if(this.right != null) {
+        if(right != null) {
             right.parent = this;
         }
         this.right = right;
@@ -81,17 +74,19 @@ public class TwoThreeNode<T extends InfiniteKey, E extends HasInfiniteKey>{
     }
 
 
-    public TwoThreeNode<T, E> search(T key) {
-        if(this.getClass().getSimpleName().equals("TwoThreeLeaf")){
-            if(this.key.equals(key)) {
-                return this;
+    public TwoThreeLeaf<T, E> search(T key) {
+        System.out.println("Searching for " + key  + ", Currently at " + this.key);
+        if(this instanceof TwoThreeLeaf){
+            if(this.key.compareTo(key) == 0) {
+                return (TwoThreeLeaf<T, E>) this;
             } else {
                 return null;
             }
         }
+
         if(key.compareTo(this.left.key) <= 0) {
             return this.left.search(key);
-        } else if(key.compareTo(this.middle.key) >= 0) {
+        } else if(key.compareTo(this.middle.key) <= 0) {
             return this.middle.search(key);
         } else {
             return this.right.search(key);
@@ -138,7 +133,7 @@ public class TwoThreeNode<T extends InfiniteKey, E extends HasInfiniteKey>{
             } else {
                 x.setChildren(this.left, x.left, null);
                 z.setChildren(x, z.right, null);
-                this.unlink(); // needed?
+                this.unlink(); // no
             }
             return z;
         }
@@ -150,7 +145,7 @@ public class TwoThreeNode<T extends InfiniteKey, E extends HasInfiniteKey>{
                 x.setChildren(x.left, x.middle, null);
             } else {
                 x.setChildren(x.left, x.middle, this.left);
-                this.unlink();
+                this.unlink(); // no
                 z.setChildren(x, z.right, null);
             }
             return z;
@@ -162,7 +157,7 @@ public class TwoThreeNode<T extends InfiniteKey, E extends HasInfiniteKey>{
             x.setChildren(x.left, x.middle, null);
         } else {
             z.setChildren(z.left, x, null);
-            this.unlink();
+            this.unlink(); // no
         }
         return z;
     }
