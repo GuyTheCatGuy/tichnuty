@@ -1,5 +1,5 @@
 public class InfiniteKey implements Comparable<InfiniteKey> {
-    private final int infinity;
+    protected final int infinity;
 
     public InfiniteKey(int infinity) {
         this.infinity = interpretInfinity(infinity);
@@ -17,4 +17,7 @@ public class InfiniteKey implements Comparable<InfiniteKey> {
     public int compareTo(InfiniteKey other) {
         return this.infinity - other.infinity;
     }
+
+    @Override
+    public String tostring
 }
