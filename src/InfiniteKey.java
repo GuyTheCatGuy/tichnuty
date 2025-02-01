@@ -1,6 +1,6 @@
 public class InfiniteKey<T extends Comparable<T>> implements Comparable<InfiniteKey> {
     private final int infinity;
-    private T key;
+    private final T key;
     public InfiniteKey(int infinity) {
         this.infinity = interpretInfinity(infinity);
         this.key = null;
@@ -10,6 +10,9 @@ public class InfiniteKey<T extends Comparable<T>> implements Comparable<Infinite
         this.infinity = 0;
     }
 
+    public int getInfinity() {
+        return this.infinity;
+    }
 
     public static int interpretInfinity(int infinity) {
         if (infinity > 0) return 1;
@@ -35,6 +38,10 @@ public class InfiniteKey<T extends Comparable<T>> implements Comparable<Infinite
     public String toString() {
         if(this.infinity == 1) return "inf";
         if(this.infinity == -1) return "-inf";
-        return "notinf";
+        return this.key.toString();
+    }
+
+    public boolean countsAsValue() {
+        return this.infinity == 0;
     }
 }

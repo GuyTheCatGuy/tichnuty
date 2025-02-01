@@ -1,21 +1,25 @@
-public class SerialNum extends InfiniteKey {
+public class SerialNum implements Comparable<SerialNum> {
     private final int serial;
 
     public SerialNum(int serial) {
-        super(0);
         this.serial = serial;
     }
 
-    @Override
-    public int compareTo(InfiniteKey o) {
-        if (o instanceof SerialNum) {
-            return Integer.compare(this.serial, ((SerialNum) o).serial);
-        }
-        return super.compareTo(o);
-    }
 
     @Override
     public String toString() {
-        return "(" + this.serial +  ',' + super.infinity + ')';
+        return "" + this.serial;
+    }
+
+    @Override
+    public int compareTo(SerialNum o) {
+
+        try{
+            return this.serial - o.serial;
+        }
+        catch (Exception e) {
+            System.out.println("ERR");
+            return 0;
+        }
     }
 }

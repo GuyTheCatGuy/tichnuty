@@ -13,6 +13,20 @@ public class DoubleNode<T> {
         this(null, null, null);
     }
 
+    public void connectBefore(DoubleNode<T> other) {
+        this.next = other;
+        if(other != null) {
+            other.prev = this;
+        }
+    }
+
+    public void connectAfter(DoubleNode<T> other) {
+        this.prev = other;
+        if(other != null) {
+            other.next = this;
+        }
+    }
+
     public DoubleNode(T value) {
         this(value, null, null);
     }

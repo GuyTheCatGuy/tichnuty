@@ -1,40 +1,58 @@
+package data_structures;
 
-public class TwoThreeTree<T extends Comparable<T>, E extends HasInfiniteKey<T>, P extends KeyExtractor<T, E>>{
-    private final P extractor;
+public class TwoThreeTree<T extends Comparable<T>, E>{
+    private final KeyManager<T, E> extractor;
     private TwoThreeNode<T, E> root;
 
 
-    public TwoThreeTree(P extractor) {
+    public TwoThreeTree(KeyManager<T, E> extractor) {
         this.extractor = extractor;
-
         TwoThreeNode<T, E> root = new TwoThreeNode<>();
         InfiniteKey<T> plusInf = extractor.extractKey(1), minusInf = extractor.extractKey(-1);
-        TwoThreeNode<T, E> plusInf = new TwoThreeNode<>();
-
-
-        TwoThreeNode<T, E> minusInf = new TwoThreeLeaf<>(-1);
-        TwoThreeNode<T, E> plusInf = new TwoThreeLeaf<>(1);
-        root.setChildren(minusInf, plusInf, null);
-
+        root.setChildren(new TwoThreeLeaf<T, E>(minusInf) , new TwoThreeLeaf<T, E>(plusInf) , null);
         this.root = root;
-        // delete
-        System.out.println(root.getLeft() == null);
-        // delete
+
     }
 
+    // delete
+    public void printSize(){
+        System.out.println(this.root.getSize());
+    }
+    //
 
+    public E getMax(){
+        return this.root.getMax().getValue();
+    }
+
+    public E getMin(){
+        return this.root.getMin().getValue();
+    }
 
     public void insert(E value) {
         InfiniteKey<T> key = this.extractor.extractKey(value);
-        InfiniteKeyValue<T, E> keyValue = new InfiniteKeyValue<>(key, value);
-        TwoThreeNode<T, E> leaf = new TwoThreeLeaf<>(value);
+        TwoThreeNode<T, E> leaf = new TwoThreeLeaf<T, E>(key, value);
         this.insert(leaf);
     }
+
+
+    public int countBefore(T key) {
+        return this.root.countLessEquals(new InfiniteKey<>(key));
+    }
+
+    public E tightestUpperBound(T key) {
+        TwoThreeLeaf<T, E> upper = this.root.tightestUpperBound(new InfiniteKey<>(key));
+        return upper.getValue();
+    }
+
+    public int countInRange(T start, T end) {
+        int beforeStart = this.root.countLessEquals(new InfiniteKey<>(start)),
+                beforeEnd = this.root.countLessEquals(new InfiniteKey<>(end));
+        return beforeEnd - beforeStart + 1;
+    }
+
     public void insert(TwoThreeNode<T, E> z) {
         TwoThreeNode<T, E> y = this.root;
-        // delete
-        System.out.println(y.getLeft() == null);
-        // delete
+
         while(!(y instanceof TwoThreeLeaf)) {
             if(z.getKey().compareTo(y.getLeft().getKey()) < 0) {
                 y = y.getLeft();
@@ -52,31 +70,41 @@ public class TwoThreeTree<T extends Comparable<T>, E extends HasInfiniteKey<T>, 
             if(z != null) {
                 z = x.insertAndSplit(z);
             } else {
-                x.updateKey();
+                x.updateKeyAndSize();
             }
         }
 
         if(z != null) {
-            TwoThreeNode<T, E> w = new TwoThreeNode<>(1);
+            TwoThreeNode<T, E> w = new TwoThreeNode<T, E>(new InfiniteKey<T>(1));
             w.setChildren(x, z, null);
             this.root = w;
         }
     }
 
+    public void reassignKey(T oldKey) {
+        // get leaf with old key
+        TwoThreeLeaf<T, E> leaf = this.root.search(new InfiniteKey<>(oldKey));
+        E value = leaf.getValue();
+        // delete from tree
+        this.delete(leaf);
+        // insertion assigns relevant key
+        insert(value);
+    }
+
+
     public E search(T key) {
-        TwoThreeLeaf<T, E> x = this.root.search(key);
+        TwoThreeLeaf<T, E> x = this.root.search(new InfiniteKey<T>(key));
         if(x != null) {
             return x.getValue();
         } else {
-            System.out.println("Nothing found");
             return null;
         }
     }
 
 
+// delete function
     public void printMinPath() {
-        System.out.println("Starting..");
-        System.out.println("root: " + this.root.getKey());
+
         TwoThreeNode<T, E> y = this.root.getLeft();
         while(! (y instanceof TwoThreeLeaf)) {
             System.out.println(y.getKey());
@@ -100,33 +128,19 @@ public class TwoThreeTree<T extends Comparable<T>, E extends HasInfiniteKey<T>, 
         }
 
         while(! (y instanceof TwoThreeLeaf)) {
-            System.out.println(y.getKey());
             if(y.getRight() != null) {
                 y = y.getRight();
             } else {
                 y = y.getMiddle();
             }
         }
-        TwoThreeNode<T, E> x = y.getParent();
-        if(x.getRight() != null) {
-            System.out.println(x.getMiddle().getKey());
-            System.out.println("Done, and rightmost is " + x.getRight().getKey() + '\n');
-        } else {
-            System.out.println(x.getLeft().getKey());
-            System.out.println("Done, and rightmost is " + x.getMiddle().getKey() + '\n');
-        }
     }
 
     public void delete(T key) {
-        System.out.println(this.search(key) + " will be deleted");
-        this.delete(this.root.search(key));
-    }
+        TwoThreeLeaf<T,E> leaf = this.root.search(new InfiniteKey<T>(key));
+        if(leaf != null) {
+            this.delete(leaf);
 
-    public void delete(E value) {
-        try {
-            this.delete((T) value.getKey());
-        } catch(ClassCastException e) {
-            return;
         }
     }
 
@@ -144,7 +158,7 @@ public class TwoThreeTree<T extends Comparable<T>, E extends HasInfiniteKey<T>, 
 
         while(y != null) {
             if(y.getMiddle() != null) {
-                y.updateKey();
+                y.updateKeyAndSize();
                 y = y.getParent();
             } else {
                 if(y != this.root) {
