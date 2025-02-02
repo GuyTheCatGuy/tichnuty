@@ -41,7 +41,7 @@ public class EfficientDoublyLinkedList<T extends Comparable<T>, E> {
 
     public void delete(T key) {
         DoubleNode<E> valueNode = this.tree.search(key);
-        System.out.println("Deleting " + valueNode);
+        //System.out.println("Deleting " + valueNode);
 
         //System.out.println("Before deletion: ");
         //this.tree.print();
@@ -117,13 +117,17 @@ public class EfficientDoublyLinkedList<T extends Comparable<T>, E> {
 
     public void reassignKey(T oldKey) {
         DoubleNode<E> node = this.tree.search(oldKey);
-        System.out.println(node + " - trying to find node before reassignment");
+        //System.out.println(node + " - trying to find node before reassignment");
         //System.out.println(node);
+        boolean res = node.getPrev() == node.getNext();
+        //System.out.println(res  + " - first infinite list check");
 
         node.getPrev().connectBefore(node.getNext());
         this.tree.reassignKey(oldKey);
+
         T newKey = this.keyManager.extractRawKey(node);
-        DoubleNode<E> newNext = this.tree.tightestUpperBound(newKey);
+        DoubleNode<E> newNext = this.tree.search(newKey).getNext();
+
         node.connectAfter(newNext.getPrev());
         node.connectBefore(newNext);
     }
@@ -137,8 +141,8 @@ public class EfficientDoublyLinkedList<T extends Comparable<T>, E> {
             curr = curr.getNext();
             count++;
         }
-        System.out.println();
-        System.out.println("Total: " + count);
+        //System.out.println();
+        //System.out.println("Total: " + count);
         //System.out.println(curr + " min");
 
         //System.out.println(this.tree.getMax() + " max");

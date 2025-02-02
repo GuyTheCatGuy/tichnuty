@@ -53,7 +53,7 @@ public class StockManager {
         Stock stock = this.stockTree.search(stockId);
         this.stockTree.delete(stockId);
         this.stockList.delete(this.priceIdKeyManager.extractRawKey(stock));
-        System.out.println("searching for the removed in tree: " + this.stockTree.search(stockId));
+        //System.out.println("searching for the removed in tree: " + this.stockTree.search(stockId));
         //System.out.println("searching for the removed in list: " + this.stockList.search(stockId));
 
 
@@ -94,6 +94,9 @@ public class StockManager {
         FloatString lowerDummy, upperDummy;
         lowerDummy = new FloatString(price1, this.stockTree.getMin().getId());
         upperDummy = new FloatString(price2, this.stockTree.getMax().getId());
+        System.out.println(lowerDummy + " lower dummy");
+        System.out.println(upperDummy + " upper dummy");
+
         return this.stockList.countValuesInRange(lowerDummy, upperDummy);
 
     }
@@ -109,7 +112,8 @@ public class StockManager {
         String[] stockIds = new String[len];
         for (int i = 0; i < len; i++) {
             //delete
-            System.out.println(stocksInRange[i].getPrice() + stocksInRange[i].getId());
+            //System.out.println(stocksInRange[i].getPrice() + stocksInRange[i].getId());
+            System.out.println(stocksInRange[i] + " iterating stocks in range");
             stockIds[i] = stocksInRange[i].getId();
         }
         return stockIds;

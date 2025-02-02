@@ -69,7 +69,16 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
     public int countInRange(T start, T end) {
         int beforeStart = this.root.countLessEquals(new InfiniteKey<>(start)),
                 beforeEnd = this.root.countLessEquals(new InfiniteKey<>(end));
-        return beforeEnd - beforeStart;
+        System.out.println("before start = " + beforeStart);
+
+        System.out.println("before end = " + beforeEnd);
+        boolean found = this.extractor.extractKey(this.tightestUpperBound(start)).compareTo(new InfiniteKey<T>(end)) <= 0;
+
+        if(!found) {
+            return 0;
+        } else {
+            return beforeEnd - beforeStart + 1;
+        }
     }
 
     private void insert(TwoThreeNode<T, E> z) {
@@ -136,7 +145,7 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
 
         TwoThreeNode<T, E> y = this.root.getLeft();
         while(! (y instanceof TwoThreeLeaf)) {
-            System.out.println(y.getKey());
+            //System.out.println(y.getKey());
             y = y.getLeft();
         }
         TwoThreeNode<T, E> x = y.getParent();
@@ -145,8 +154,8 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
     }
 
     public void printMaxPath() {
-        System.out.println("Starting..");
-        System.out.println("root: " + this.root.getKey());
+        //System.out.println("Starting..");
+        //System.out.println("root: " + this.root.getKey());
 
         TwoThreeNode<T, E> y;
 
@@ -177,8 +186,8 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
 
     public void delete(TwoThreeNode<T, E> x) {
 
-        System.out.println("boutta delete, this is before:");
-        print();
+        //System.out.println("boutta delete, this is before:");
+        //print();
 
         TwoThreeNode<T, E> y = x.getParent();
         if(x == y.getLeft()) {
@@ -202,13 +211,13 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
                     this.root = y.getLeft();
                     y.getLeft().setParent(null);
                     y.unlink();
-                    System.out.println("this is after");
-                    print();
+                    //System.out.println("this is after");
+                    //print();
                     return;
                 }
             }
         }
-        System.out.println("this is after");
-        print();
+        //System.out.println("this is after");
+        //print();
     }
 }
