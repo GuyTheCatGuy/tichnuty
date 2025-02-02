@@ -251,6 +251,7 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
             this.setChildren(x.right, this.left, null);
             x.setChildren(x.left, x.middle, null);
         } else {
+            x.setChildren(x.left, x.middle, this.left);
             z.setChildren(z.left, x, null);
             this.unlink(); // no
         }

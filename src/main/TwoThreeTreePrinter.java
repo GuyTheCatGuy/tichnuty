@@ -42,17 +42,18 @@ public class TwoThreeTreePrinter<T extends Comparable<T>, E> {
 
                 // Enqueue children with their parent
                 if (!(node instanceof TwoThreeLeaf)) {
-                    leafcount++;
                     queue.add(new NodeWithParent<>(node.getLeft(), node));
                     queue.add(new NodeWithParent<>(node.getMiddle(), node));
                     if (node.getRight() != null) { // Right child exists in 3-node case
                         queue.add(new NodeWithParent<>(node.getRight(), node));
                     }
+                } else {
+                    leafcount++;
                 }
             }
             System.out.println();  // Newline for next level
         }
-        System.out.println("\nTotal leaf nodes: " + leafcount);
+        System.out.println("Total leaf nodes: " + leafcount + "\n");
 
     }
 

@@ -55,8 +55,9 @@ public class Main {
         }
 
         System.out.println("\n");
-        stockmanger.printListTree();        System.out.println("\n");
-        stockmanger.printTree();        System.out.println("\n");
+        //stockmanger.printListTree();        System.out.println("\n");
+        //stockmanger.printTree();        System.out.println("\n");
+        stockmanger.printList(); System.out.println("\n");
         System.out.println("\n");
 
         for (int i = 0; i < 3; i++) {
@@ -80,8 +81,9 @@ public class Main {
         }
 
         System.out.println("\n");
-        stockmanger.printListTree();        System.out.println("\n");
-        stockmanger.printTree();        System.out.println("\n");
+        //stockmanger.printListTree();        System.out.println("\n");
+        //stockmanger.printTree();        System.out.println("\n");
+        //stockmanger.printList(); System.out.println("\n");
         System.out.println("\n");
 
         Map<String, ArrayList<Map.Entry<Long, Float>>> additionalData = new HashMap<>();
@@ -106,8 +108,9 @@ public class Main {
 
         //delete
         System.out.println("\n");
-        stockmanger.printListTree();        System.out.println("\n");
-        stockmanger.printTree();        System.out.println("\n");
+        //stockmanger.printListTree();        System.out.println("\n");
+        //stockmanger.printTree();        System.out.println("\n");
+        stockmanger.printList(); System.out.println("\n");
         System.out.println("\n");
 
         //
@@ -166,7 +169,7 @@ public class Main {
         price2 = 170f;
         stockamount = stockmanger.getAmountStocksInPriceRange(price1, price2);
         expression = stockamount == 4;
-        //Assert(expression);
+        Assert(expression);
         System.out.println(stockamount);
         String[] stocksInRange = stockmanger.getStocksInPriceRange(price1, price2);
         expression = stocksInRange[0] == "YZABCD";

@@ -167,13 +167,19 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
 
     public void delete(T key) {
         TwoThreeLeaf<T,E> leaf = this.root.search(new InfiniteKey<T>(key));
+
+
+
         if(leaf != null) {
             this.delete(leaf);
-
         }
     }
 
     public void delete(TwoThreeNode<T, E> x) {
+
+        System.out.println("boutta delete, this is before:");
+        print();
+
         TwoThreeNode<T, E> y = x.getParent();
         if(x == y.getLeft()) {
             y.setChildren(y.getMiddle(), y.getRight(), null);
@@ -196,9 +202,13 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
                     this.root = y.getLeft();
                     y.getLeft().setParent(null);
                     y.unlink();
+                    System.out.println("this is after");
+                    print();
                     return;
                 }
             }
         }
+        System.out.println("this is after");
+        print();
     }
 }
