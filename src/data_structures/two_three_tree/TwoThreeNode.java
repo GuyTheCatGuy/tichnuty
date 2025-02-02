@@ -1,4 +1,5 @@
-package data_structures;
+package data_structures.two_three_tree;
+import data_structures.key_management.*;
 
 public class TwoThreeNode<T extends Comparable<T>, E>{
     protected InfiniteKey<T> key;
@@ -13,8 +14,8 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
     }
 
     /*
-    private data_structures.TwoThreeNode(InfiniteKey<T> key, data_structures.TwoThreeNode<T, E> left, data_structures.TwoThreeNode<T, E> middle, data_structures.TwoThreeNode<T, E> right,
-                         data_structures.TwoThreeNode<T, E> parent) {
+    private data_structures.two_three_tree.TwoThreeNode(data_structures.key_management.InfiniteKey<T> key, data_structures.two_three_tree.TwoThreeNode<T, E> left, data_structures.two_three_tree.TwoThreeNode<T, E> middle, data_structures.two_three_tree.TwoThreeNode<T, E> right,
+                         data_structures.two_three_tree.TwoThreeNode<T, E> parent) {
         this.key = key;
         this.left = left;
         this.middle = middle;
@@ -43,7 +44,7 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
 
 
     /* delete
-    public data_structures.TwoThreeNode(InfiniteKey<T> key, data_structures.TwoThreeNode<T, E> left, data_structures.TwoThreeNode<T, E> middle, data_structures.TwoThreeNode<T, E> right) {
+    public data_structures.two_three_tree.TwoThreeNode(data_structures.key_management.InfiniteKey<T> key, data_structures.two_three_tree.TwoThreeNode<T, E> left, data_structures.two_three_tree.TwoThreeNode<T, E> middle, data_structures.two_three_tree.TwoThreeNode<T, E> right) {
 
         this(key, left, middle, right, null);
     }
@@ -135,13 +136,16 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
             return (TwoThreeLeaf<T, E>) this;
         }
 
+
+        //return this.currentUpperBound(key).tightestUpperBound(key);
         return this.currentUpperBound(key).tightestUpperBound(key);
+
     }
 
     public TwoThreeNode<T, E> insertAndSplit( TwoThreeNode<T, E> z) {
         TwoThreeNode<T, E> left = this.left, middle = this.middle, right = this.right;
-        if(right == null) {
-            if(z.key.compareTo(this.left.key) < 0) {
+        if (right == null) {
+            if (z.key.compareTo(this.left.key) < 0) {
                 this.setChildren(z, left, middle);
             } else if (z.key.compareTo(this.middle.key) < 0) {
                 this.setChildren(left, z, middle);
@@ -153,21 +157,24 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
 
         TwoThreeNode<T, E> y = new TwoThreeNode<>();
 
-        if(z.key.compareTo(this.left.key) < 0) {
+        if (z.key.compareTo(this.left.key) < 0) {
             this.setChildren(z, left, null);
             y.setChildren(middle, right, null);
-        } else if(z.key.compareTo(this.middle.key) < 0){
+        } else if (z.key.compareTo(this.middle.key) < 0) {
             this.setChildren(left, z, null);
             y.setChildren(middle, right, null);
-        } else {
-            this.setChildren(left, null, null);
+        } else if(z.key.compareTo(this.right.key) < 0){
+            this.setChildren(left, middle, null);
+            y.setChildren(z, right, null);
+        }else {
+            this.setChildren(left, middle, null);
             y.setChildren(right, z, null);
         }
         return y;
     }
 /*
-    public data_structures.TwoThreeLeaf<T, E> getInfimum(InfiniteKey<T> key){
-        if(this.getClass() == data_structures.TwoThreeLeaf.class){
+    public data_structures.two_three_tree.TwoThreeLeaf<T, E> getInfimum(data_structures.key_management.InfiniteKey<T> key){
+        if(this.getClass() == data_structures.two_three_tree.TwoThreeLeaf.class){
 
         }
 
@@ -179,7 +186,7 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
     }
 
 
-    private data_structures.TwoThreeNode<T, E> getSameLevelLeft() {
+    private data_structures.two_three_tree.TwoThreeNode<T, E> getSameLevelLeft() {
         if(this.parent == null) {
             return null;
         }
@@ -202,7 +209,7 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
     }
 
 /*
-    public data_structures.TwoThreeLeaf<T, E> getSupremum(InfiniteKey<T> key){
+    public data_structures.two_three_tree.TwoThreeLeaf<T, E> getSupremum(data_structures.key_management.InfiniteKey<T> key){
 
         if(this.key.compareTo(key) == 0) {
             return this.getMax();

@@ -1,3 +1,5 @@
+package data_structures.key_management;
+
 public class InfiniteKey<T extends Comparable<T>> implements Comparable<InfiniteKey> {
     private final int infinity;
     private final T key;
@@ -5,6 +7,7 @@ public class InfiniteKey<T extends Comparable<T>> implements Comparable<Infinite
         this.infinity = interpretInfinity(infinity);
         this.key = null;
     }
+
     public InfiniteKey(T key) {
         this.key = key;
         this.infinity = 0;

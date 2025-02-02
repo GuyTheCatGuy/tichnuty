@@ -1,3 +1,5 @@
+package data_structures.key_management;
+
 public interface KeyManager<T extends Comparable<T>, E> {
 
     public default InfiniteKey<T> extractKey(E value) {

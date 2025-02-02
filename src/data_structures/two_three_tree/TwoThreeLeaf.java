@@ -1,4 +1,5 @@
-package data_structures;
+package data_structures.two_three_tree;
+import data_structures.key_management.*;
 
 public class TwoThreeLeaf<T extends Comparable<T>, E > extends TwoThreeNode<T, E>{
     private E value;
@@ -14,6 +15,7 @@ public class TwoThreeLeaf<T extends Comparable<T>, E > extends TwoThreeNode<T, E
         }
 
     }
+
 
     public TwoThreeLeaf(InfiniteKey<T> key) {
         this(key, null);

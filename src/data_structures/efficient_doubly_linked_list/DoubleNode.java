@@ -1,3 +1,5 @@
+package data_structures.efficient_doubly_linked_list;
+
 public class DoubleNode<T> {
     private DoubleNode<T> prev;
     private DoubleNode<T> next;
@@ -61,6 +63,15 @@ public class DoubleNode<T> {
         }
         if(this.next != null) {
             this.next.prev = this.prev;
+        }
+    }
+
+    @Override
+    public String toString(){
+        if(value != null) {
+            return this.value.toString();
+        } else {
+            return "nullValue";
         }
     }
 }

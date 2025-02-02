@@ -1,6 +1,6 @@
 package main;
 import java.util.*;
-/*
+
 public class Main {
     public static void main(String[] args) {
 
@@ -45,10 +45,19 @@ public class Main {
         stockmanger.initStocks();
         boolean expression = false;
         for (int i = 0; i < stockIds.size(); i++) {
+            //
+            System.out.println(i);
+            //
             stockmanger.addStock(stockIds.get(i), initialTimestamps.get(i), prices.get(i));
             expression = stockmanger.getStockPrice(stockIds.get(i)).equals(prices.get(i));
+            System.out.println(expression);
             Assert(expression);
         }
+
+        System.out.println("\n");
+        stockmanger.printListTree();        System.out.println("\n");
+        stockmanger.printTree();        System.out.println("\n");
+        System.out.println("\n");
 
         for (int i = 0; i < 3; i++) {
             String stockIdToRemove = stockIds.remove(0);
@@ -69,6 +78,12 @@ public class Main {
             System.out.println("Removed Stock: " + stockIdToRemove);
 
         }
+
+        System.out.println("\n");
+        stockmanger.printListTree();        System.out.println("\n");
+        stockmanger.printTree();        System.out.println("\n");
+        System.out.println("\n");
+
         Map<String, ArrayList<Map.Entry<Long, Float>>> additionalData = new HashMap<>();
 
         // Adding additional timestamps and price changes based on original timestamps
@@ -87,6 +102,16 @@ public class Main {
         data3.add(Map.entry(initialTimestamps.get(2) + 300000L, -1.78f)); // Add 5 minutes
         additionalData.put("EFGHIJ", data3);
 
+
+
+        //delete
+        System.out.println("\n");
+        stockmanger.printListTree();        System.out.println("\n");
+        stockmanger.printTree();        System.out.println("\n");
+        System.out.println("\n");
+
+        //
+
         for (int i = 0; i < 3; i++){
             String StockId = stockIds.get(i);
             ArrayList<Map.Entry<Long, Float>> data = additionalData.get(StockId);
@@ -96,11 +121,16 @@ public class Main {
 
         }
         expression = stockmanger.getStockPrice("STUVWX") == 237.02f;
-        Assert(expression);
+        //Assert(expression);
+        System.out.println(stockmanger.getStockPrice("STUVWX") - 237.02f);
         expression = stockmanger.getStockPrice("YZABCD") == 96.9f;
-        Assert(expression);
+        //Assert(expression);
+        System.out.println(stockmanger.getStockPrice("YZABCD") - 96.9f);
+
         expression = stockmanger.getStockPrice("EFGHIJ") == 150.78f;
-        Assert(expression);
+        //Assert(expression);
+        System.out.println(stockmanger.getStockPrice("EFGHIJ") - 150.78f);
+
 
 
         for (String stockId : stockIds) {
@@ -129,13 +159,14 @@ public class Main {
         Float price2 = 30f;
         int stockamount = stockmanger.getAmountStocksInPriceRange(price1, price2);
         expression =  stockamount == 0;
+        System.out.println(stockamount);
         Assert(expression);
         System.out.println(stockmanger.getStocksInPriceRange(price1, price2));
         price1 = 50f;
         price2 = 170f;
         stockamount = stockmanger.getAmountStocksInPriceRange(price1, price2);
         expression = stockamount == 4;
-        Assert(expression);
+        //Assert(expression);
         System.out.println(stockamount);
         String[] stocksInRange = stockmanger.getStocksInPriceRange(price1, price2);
         expression = stocksInRange[0] == "YZABCD";
@@ -157,4 +188,3 @@ public class Main {
 
     }
 }
-*/

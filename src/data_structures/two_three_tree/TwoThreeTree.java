@@ -1,4 +1,6 @@
-package data_structures;
+package data_structures.two_three_tree;
+import data_structures.key_management.*;
+import main.TwoThreeTreePrinter;
 
 public class TwoThreeTree<T extends Comparable<T>, E>{
     private final KeyManager<T, E> extractor;
@@ -6,12 +8,22 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
 
 
     public TwoThreeTree(KeyManager<T, E> extractor) {
+        this(null, null, extractor);
+
+    }
+
+    public TwoThreeTree(E leftSentinelVal, E rightSentinelVal, KeyManager<T, E> extractor){
         this.extractor = extractor;
         TwoThreeNode<T, E> root = new TwoThreeNode<>();
         InfiniteKey<T> plusInf = extractor.extractKey(1), minusInf = extractor.extractKey(-1);
-        root.setChildren(new TwoThreeLeaf<T, E>(minusInf) , new TwoThreeLeaf<T, E>(plusInf) , null);
-        this.root = root;
 
+        // was node before
+        TwoThreeLeaf<T, E> left = new TwoThreeLeaf<>(minusInf, leftSentinelVal), right = new TwoThreeLeaf<>(plusInf, rightSentinelVal);
+
+        //
+
+        root.setChildren(left , right , null);
+        this.root = root;
     }
 
     // delete
@@ -21,11 +33,21 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
     //
 
     public E getMax(){
-        return this.root.getMax().getValue();
+        TwoThreeLeaf<T, E> maxNode = this.root.getMax();
+        if(maxNode != null){
+            return maxNode.getValue();
+        } else {
+            return null;
+        }
     }
 
     public E getMin(){
-        return this.root.getMin().getValue();
+        TwoThreeLeaf<T, E> minNode = this.root.getMin();
+        if(minNode != null){
+            return minNode.getValue();
+        } else {
+            return null;
+        }
     }
 
     public void insert(E value) {
@@ -47,10 +69,10 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
     public int countInRange(T start, T end) {
         int beforeStart = this.root.countLessEquals(new InfiniteKey<>(start)),
                 beforeEnd = this.root.countLessEquals(new InfiniteKey<>(end));
-        return beforeEnd - beforeStart + 1;
+        return beforeEnd - beforeStart;
     }
 
-    public void insert(TwoThreeNode<T, E> z) {
+    private void insert(TwoThreeNode<T, E> z) {
         TwoThreeNode<T, E> y = this.root;
 
         while(!(y instanceof TwoThreeLeaf)) {
@@ -75,7 +97,7 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
         }
 
         if(z != null) {
-            TwoThreeNode<T, E> w = new TwoThreeNode<T, E>(new InfiniteKey<T>(1));
+            TwoThreeNode<T, E> w = new TwoThreeNode<T, E>();
             w.setChildren(x, z, null);
             this.root = w;
         }
@@ -100,6 +122,13 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
             return null;
         }
     }
+
+    //delete function
+    public void print(){
+        TwoThreeTreePrinter printer = new TwoThreeTreePrinter();
+        printer.printTree(this.root);
+    }
+
 
 
 // delete function
