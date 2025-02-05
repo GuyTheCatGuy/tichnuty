@@ -28,13 +28,11 @@ public class InfiniteKey<T extends Comparable<T>> implements Comparable<Infinite
         if(other == null) {
             return 1;
         }
-
-        int infinityDiff = this.infinity - other.infinity;
-        if (infinityDiff != 0) {
-             return infinityDiff;
-        } else {
+        
+        if (this.infinity == 0 && other.infinity == 0) {
             return this.key.compareTo((T) other.key);
         }
+        return this.infinity - other.infinity;
     }
 
     @Override

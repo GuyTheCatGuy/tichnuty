@@ -1,6 +1,5 @@
 package data_structures.two_three_tree;
 import data_structures.key_management.*;
-import main.TwoThreeTreePrinter;
 
 public class TwoThreeTree<T extends Comparable<T>, E>{
     private final KeyManager<T, E> extractor;
@@ -20,17 +19,9 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
         // was node before
         TwoThreeLeaf<T, E> left = new TwoThreeLeaf<>(minusInf, leftSentinelVal), right = new TwoThreeLeaf<>(plusInf, rightSentinelVal);
 
-        //
-
         root.setChildren(left , right , null);
         this.root = root;
     }
-
-    // delete
-    public void printSize(){
-        System.out.println(this.root.getSize());
-    }
-    //
 
     public E getMax(){
         TwoThreeLeaf<T, E> maxNode = this.root.getMax();
@@ -69,15 +60,12 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
     public int countInRange(T start, T end) {
         int beforeStart = this.root.countLessEquals(new InfiniteKey<>(start)),
                 beforeEnd = this.root.countLessEquals(new InfiniteKey<>(end));
-        System.out.println("before start = " + beforeStart);
-
-        System.out.println("before end = " + beforeEnd);
         boolean found = this.extractor.extractKey(this.tightestUpperBound(start)).compareTo(new InfiniteKey<T>(end)) <= 0;
-
         if(!found) {
             return 0;
         } else {
-            return beforeEnd - beforeStart + 1;
+            boolean equalsStart = this.root.search(new InfiniteKey<>(start)) != null;
+            return beforeEnd - beforeStart + (equalsStart ? 1 : 0);
         }
     }
 
@@ -132,52 +120,8 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
         }
     }
 
-    //delete function
-    public void print(){
-        TwoThreeTreePrinter printer = new TwoThreeTreePrinter();
-        printer.printTree(this.root);
-    }
-
-
-
-// delete function
-    public void printMinPath() {
-
-        TwoThreeNode<T, E> y = this.root.getLeft();
-        while(! (y instanceof TwoThreeLeaf)) {
-            //System.out.println(y.getKey());
-            y = y.getLeft();
-        }
-        TwoThreeNode<T, E> x = y.getParent();
-        System.out.println(x.getMiddle().getKey());
-        System.out.println("Done, and leftmost is " + x.getLeft().getKey() + '\n');
-    }
-
-    public void printMaxPath() {
-        //System.out.println("Starting..");
-        //System.out.println("root: " + this.root.getKey());
-
-        TwoThreeNode<T, E> y;
-
-        if(this.root.getRight() != null) {
-            y = root.getRight();
-        } else {
-            y = root.getMiddle();
-        }
-
-        while(! (y instanceof TwoThreeLeaf)) {
-            if(y.getRight() != null) {
-                y = y.getRight();
-            } else {
-                y = y.getMiddle();
-            }
-        }
-    }
-
     public void delete(T key) {
         TwoThreeLeaf<T,E> leaf = this.root.search(new InfiniteKey<T>(key));
-
-
 
         if(leaf != null) {
             this.delete(leaf);
@@ -185,10 +129,6 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
     }
 
     public void delete(TwoThreeNode<T, E> x) {
-
-        //System.out.println("boutta delete, this is before:");
-        //print();
-
         TwoThreeNode<T, E> y = x.getParent();
         if(x == y.getLeft()) {
             y.setChildren(y.getMiddle(), y.getRight(), null);
@@ -198,7 +138,6 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
         } else {
             y.setChildren(y.getLeft(), y.getMiddle(), null);
         }
-        x.unlink();
 
         while(y != null) {
             if(y.getMiddle() != null) {
@@ -210,14 +149,9 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
                 } else {
                     this.root = y.getLeft();
                     y.getLeft().setParent(null);
-                    y.unlink();
-                    //System.out.println("this is after");
-                    //print();
                     return;
                 }
             }
         }
-        //System.out.println("this is after");
-        //print();
     }
 }

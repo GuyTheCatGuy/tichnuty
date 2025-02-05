@@ -1,6 +1,6 @@
 package main.key_management;
 
-public class FloatString implements Comparable<FloatString>, Cloneable {
+public class FloatString implements Comparable<FloatString> {
     private Float num;
     private String str;
 
@@ -22,17 +22,5 @@ public class FloatString implements Comparable<FloatString>, Cloneable {
     @Override
     public String toString() {
         return "(" + this.num + ", " + this.str + ")";
-    }
-
-    // maybe?
-    @Override
-    public Object clone() {
-        try{
-            FloatString copy = (FloatString) super.clone();
-            return copy;
-
-        } catch (CloneNotSupportedException e){
-            return null;
-        }
     }
 }

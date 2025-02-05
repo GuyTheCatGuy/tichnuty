@@ -13,25 +13,8 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
         return this.size;
     }
 
-    /*
-    private data_structures.two_three_tree.TwoThreeNode(data_structures.key_management.InfiniteKey<T> key, data_structures.two_three_tree.TwoThreeNode<T, E> left, data_structures.two_three_tree.TwoThreeNode<T, E> middle, data_structures.two_three_tree.TwoThreeNode<T, E> right,
-                         data_structures.two_three_tree.TwoThreeNode<T, E> parent) {
-        this.key = key;
-        this.left = left;
-        this.middle = middle;
-        this.right = right;
-        this.parent = parent;
-    }
-*/
-
-    public TwoThreeNode(){
-        //this(null, null, null, null, null);
-        this(null);
-    }
-
 
     public TwoThreeNode(InfiniteKey<T> key) {
-        //this(key, null, null, null, null);
         this.key = key;
         this.left = null;
         this.middle = null;
@@ -40,16 +23,10 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
         this.size = 0;
     }
 
-
-
-
-    /* delete
-    public data_structures.two_three_tree.TwoThreeNode(data_structures.key_management.InfiniteKey<T> key, data_structures.two_three_tree.TwoThreeNode<T, E> left, data_structures.two_three_tree.TwoThreeNode<T, E> middle, data_structures.two_three_tree.TwoThreeNode<T, E> right) {
-
-        this(key, left, middle, right, null);
+    public TwoThreeNode(){
+        this(null);
     }
-    */
-
+    
     public void updateKeyAndSize(){
         int size = 0;
         this.key = this.left.key;
@@ -109,38 +86,28 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
 
    }
 
-   public int countLessEquals(InfiniteKey<T> key){
-        if(this instanceof TwoThreeLeaf){
-            if(this.key.compareTo(key) <= 0) {
-                //System.out.println(((TwoThreeLeaf<T, E>) this).getValue() + " is less than " + key);
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-
-
-
+    public int countLessEquals(InfiniteKey<T> key){
+       if(this instanceof TwoThreeLeaf){
+           if(this.key.compareTo(key) <= 0) {
+               return 1;
+           } else {
+               return 0;
+           }
+       }
        if(key.compareTo(this.left.key) <= 0) {
            return this.left.countLessEquals(key);
        } else if(key.compareTo(this.middle.key) <= 0) {
            return this.left.size + this.middle.countLessEquals(key);
        } else {
-           return this.left.size + this.middle.size + this.right.countLessEquals(key);
+            return this.left.size + this.middle.size + this.right.countLessEquals(key);
        }
    }
-
-
 
     public TwoThreeLeaf<T, E> tightestUpperBound(InfiniteKey<T> key) {
         if(this instanceof TwoThreeLeaf){
             return (TwoThreeLeaf<T, E>) this;
         }
-
-
-        //return this.currentUpperBound(key).tightestUpperBound(key);
         return this.currentUpperBound(key).tightestUpperBound(key);
-
     }
 
     public TwoThreeNode<T, E> insertAndSplit( TwoThreeNode<T, E> z) {
@@ -173,34 +140,7 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
         }
         return y;
     }
-/*
-    public data_structures.two_three_tree.TwoThreeLeaf<T, E> getInfimum(data_structures.key_management.InfiniteKey<T> key){
-        if(this.getClass() == data_structures.two_three_tree.TwoThreeLeaf.class){
 
-        }
-
-        if(this.key.compareTo(key) == 0) {
-            return this.getMax();
-        } else if(this.key.compareTo(key) > 0) {
-
-        }
-    }
-
-
-    private data_structures.two_three_tree.TwoThreeNode<T, E> getSameLevelLeft() {
-        if(this.parent == null) {
-            return null;
-        }
-
-        if(this == this.parent.right) {
-            return this.parent.middle;
-        } else if(this == this.parent.middle) {
-            return this.parent.left;
-        }
-
-
-    }
-*/
     private TwoThreeNode<T, E> getRightMost() {
         if(this.right == null) {
             return this.middle;
@@ -209,16 +149,6 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
         }
     }
 
-/*
-    public data_structures.two_three_tree.TwoThreeLeaf<T, E> getSupremum(data_structures.key_management.InfiniteKey<T> key){
-
-        if(this.key.compareTo(key) == 0) {
-            return this.getMax();
-        }
-
-
-    }
-*/
     public TwoThreeNode<T, E> borrowOrMerge(){
         TwoThreeNode<T, E> z = this.parent, x;
         if(this == z.left) {
@@ -229,7 +159,6 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
             } else {
                 x.setChildren(this.left, x.left, null);
                 z.setChildren(x, z.right, null);
-                this.unlink(); // no
             }
             return z;
         }
@@ -241,7 +170,6 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
                 x.setChildren(x.left, x.middle, null);
             } else {
                 x.setChildren(x.left, x.middle, this.left);
-                this.unlink(); // no
                 z.setChildren(x, z.right, null);
             }
             return z;
@@ -254,7 +182,6 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
         } else {
             x.setChildren(x.left, x.middle, this.left);
             z.setChildren(z.left, x, null);
-            this.unlink(); // no
         }
         return z;
     }
@@ -296,11 +223,6 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
 
         return this.getRightMost().getMax();
     }
-
-    public void unlink() {
-
-    }
-
 
     public InfiniteKey getKey() {
         return this.key;

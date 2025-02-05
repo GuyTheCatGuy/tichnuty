@@ -1,6 +1,4 @@
 package main;
-import data_structures.*;
-import data_structures.key_management.InfiniteKey;
 import data_structures.two_three_tree.TwoThreeTree;
 import main.key_management.UpdateTimestampExtractor;
 
@@ -8,7 +6,7 @@ public class Stock {
     private String stockId;
     private Float price;
     private TwoThreeTree<Long, StockUpdate> tree;
-    static UpdateTimestampExtractor TimestampManager = new UpdateTimestampExtractor();
+    public static UpdateTimestampExtractor TimestampManager = new UpdateTimestampExtractor();
 
     public Stock(String stockId, StockUpdate initializationPrice) {
         this.stockId = stockId;
@@ -31,13 +29,12 @@ public class Stock {
     }
 
     public void RemoveUpdate(Long updateTimestamp) {
-        Float badDifference = this.tree.search(updateTimestamp).getDifference();
+        StockUpdate update = this.tree.search(updateTimestamp);
+        if(update == null) {
+            throw new IllegalArgumentException("Stock update timestamp not found");
+        }
+        Float badDifference = update.getDifference();
         this.tree.delete(updateTimestamp);
         this.price -= badDifference;
-    }
-
-    @Override
-    public String toString() {
-        return this.stockId + "with price" + this.price;
     }
 }
