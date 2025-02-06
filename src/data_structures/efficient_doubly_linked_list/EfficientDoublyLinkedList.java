@@ -127,9 +127,15 @@ public class EfficientDoublyLinkedList<T extends Comparable<T>, E> {
         //node.getPrev().connectBefore(node.getNext()); - instead:
         node.unlink();
 
-        System.out.println("before reass, and key is" + oldKey);
+        System.out.println("before reass, and key is" + oldKey + ", printing trees:");
+
+        print();
+
+
+
         this.tree.print();
-        this.tree.reassignKey(oldKey);
+        //this.tree.reassignKey(oldKey);
+        this.tree.delete(oldKey);
         print();
 
 
@@ -137,13 +143,17 @@ public class EfficientDoublyLinkedList<T extends Comparable<T>, E> {
         System.out.println(res  + " - second infinite list check");
 
         T newKey = this.keyManager.extractRawKey(node);
-        DoubleNode<E> newNext = this.tree.search(newKey).getNext();
+        //successor
+        DoubleNode<E> newNext = this.tree.tightestUpperBound(newKey);
+
+        System.out.println(newNext + " plz");
 
         node.connectAfter(newNext.getPrev());
         //node.connectBefore(newNext);
 
         res = node.getPrev() == node.getNext();
         System.out.println(res  + " - third infinite list check");
+        this.tree.insert(node);
     }
 
     public void print() {

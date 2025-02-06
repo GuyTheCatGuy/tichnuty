@@ -11,6 +11,7 @@ public class TwoThreeLeaf<T extends Comparable<T>, E > extends TwoThreeNode<T, E
         if(key.countsAsValue()) {
             this.size = 1;
         } else {
+            //this.size = 1;
             this.size = 0;
         }
 

@@ -13,4 +13,5 @@ public class StockUpdate {
     public Long getTimestamp() {
         return timestamp;
     }
+
 }

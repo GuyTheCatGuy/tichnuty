@@ -112,12 +112,12 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
    public int countLessEquals(InfiniteKey<T> key){
         if(this instanceof TwoThreeLeaf){
             System.out.println("end is reached, " + this.key);
-            if(this.key.compareTo(key) <= 0) {
+            if (this.key.getInfinity() == 1) {
+                System.out.println("Infinity reached");
+                return 0;
+            } else if(this.key.compareTo(key) <= 0) {
                 //System.out.println(((TwoThreeLeaf<T, E>) this).getValue() + " is less than " + key);
                 return 1;
-            } else if (this.key.getInfinity() == 1) {
-                System.out.println("Infinity reached");
-                return -1;
             }
             else {
                 return 0;
@@ -231,7 +231,7 @@ public class TwoThreeNode<T extends Comparable<T>, E>{
                 this.setChildren(this.left, x.left, null);
                 x.setChildren(x.middle, x.right, null);
             } else {
-                x.setChildren(this.left, x.left, null);
+                x.setChildren(this.left, x.left, x.middle);
                 z.setChildren(x, z.right, null);
                 this.unlink(); // no
             }
