@@ -386,6 +386,9 @@ public class Main {
             System.out.println(stock);
         }
 
+        stockmanger.printTree();
+        stockmanger.printList();
+        stockmanger.printListTree();
         // change the price of one of the stocks
         stockmanger.updateStock("CDEFGH", 1708650900000L + 60000L, 50.0f);
         //System.out.println("Stock Tree by price");

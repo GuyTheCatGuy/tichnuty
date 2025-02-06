@@ -28,7 +28,7 @@ public class EfficientDoublyLinkedList<T extends Comparable<T>, E> {
         //sentinel should have pointer?
         //System.out.println(next + " - next");
         valueNode.connectAfter(next.getPrev());
-        valueNode.connectBefore(next);
+        ///////valueNode.connectBefore(next);
 
         //print();
         //System.out.println("\n");
@@ -46,7 +46,8 @@ public class EfficientDoublyLinkedList<T extends Comparable<T>, E> {
         //System.out.println("Before deletion: ");
         //this.tree.print();
         //System.out.println();
-        valueNode.getPrev().connectBefore(valueNode.getNext());
+        ////////valueNode.getPrev().connectBefore(valueNode.getNext());
+        valueNode.unlink();
         this.tree.delete(key);
         //System.out.println("After deletion: ");
         //this.tree.print();
@@ -117,19 +118,32 @@ public class EfficientDoublyLinkedList<T extends Comparable<T>, E> {
 
     public void reassignKey(T oldKey) {
         DoubleNode<E> node = this.tree.search(oldKey);
-        //System.out.println(node + " - trying to find node before reassignment");
+        System.out.println(node + " - trying to find node before reassignment");
         //System.out.println(node);
+        System.out.println(node.getPrev());
         boolean res = node.getPrev() == node.getNext();
-        //System.out.println(res  + " - first infinite list check");
+        System.out.println(res  + " - first infinite list check");
 
-        node.getPrev().connectBefore(node.getNext());
+        //node.getPrev().connectBefore(node.getNext()); - instead:
+        node.unlink();
+
+        System.out.println("before reass, and key is" + oldKey);
+        this.tree.print();
         this.tree.reassignKey(oldKey);
+        print();
+
+
+        res = node.getPrev() == node.getNext();
+        System.out.println(res  + " - second infinite list check");
 
         T newKey = this.keyManager.extractRawKey(node);
         DoubleNode<E> newNext = this.tree.search(newKey).getNext();
 
         node.connectAfter(newNext.getPrev());
-        node.connectBefore(newNext);
+        //node.connectBefore(newNext);
+
+        res = node.getPrev() == node.getNext();
+        System.out.println(res  + " - third infinite list check");
     }
 
     public void print() {

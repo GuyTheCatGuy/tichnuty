@@ -15,19 +15,51 @@ public class DoubleNode<T> {
         this(null, null, null);
     }
 
+//    public void connectBefore(DoubleNode<T> other) {
+//        this.next = other;
+//        if(other != null) {
+//            other.prev = this;
+//        }
+//    }
+
+//    public void connectAfter(DoubleNode<T> other) {
+//        this.prev = other;
+//        if(other != null) {
+//            other.next = this;
+//        }
+//    }
+
     public void connectBefore(DoubleNode<T> other) {
+        if(other == null) {
+            this.next = null;
+            return;
+        }
+        DoubleNode<T> otherPrev = other.prev;
+        other.prev = this;
         this.next = other;
-        if(other != null) {
-            other.prev = this;
+        this.prev = otherPrev;
+
+        if(otherPrev != null) {
+            otherPrev.next = this;
         }
     }
 
     public void connectAfter(DoubleNode<T> other) {
+        if(other == null) {
+            this.prev = null;
+            return;
+        }
+
+        DoubleNode<T> otherNext = other.next;
+        other.next = this;
         this.prev = other;
-        if(other != null) {
-            other.next = this;
+        this.next = otherNext;
+
+        if(otherNext != null) {
+            otherNext.prev = this;
         }
     }
+
 
     public DoubleNode(T value) {
         this(value, null, null);

@@ -32,6 +32,9 @@ public class TwoThreeTreePrinter<T extends Comparable<T>, E> {
 
                 // Print node contents with parent info
                 System.out.print("[key: " + node.getKey());
+                if(node instanceof TwoThreeLeaf) {
+                    System.out.print(" is leaf");
+                }
 
                 // Print parent info if applicable
                 if (parent != null) {

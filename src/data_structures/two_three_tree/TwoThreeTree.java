@@ -82,18 +82,37 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
     }
 
     private void insert(TwoThreeNode<T, E> z) {
+
+        if(!(z instanceof TwoThreeLeaf)) {
+            System.out.println("ERROR ERROR ERROR");
+        }
+
         TwoThreeNode<T, E> y = this.root;
+
+
 
         while(!(y instanceof TwoThreeLeaf)) {
             if(z.getKey().compareTo(y.getLeft().getKey()) < 0) {
+                if(y.getLeft() == null) {
+                    break;
+                }
                 y = y.getLeft();
             } else if(z.getKey().compareTo(y.getMiddle().getKey()) < 0) {
+                if(y.getMiddle() == null) {
+                    break;
+                }
                 y = y.getMiddle();
             } else {
+                if(y.getRight() == null) {
+                    break;
+                }
                 y = y.getRight();
             }
         }
         TwoThreeNode<T, E> x = y.getParent();
+        if(y == this.root) {
+            System.out.println("WTF");
+        }
         z = x.insertAndSplit(z);
 
         while(x != this.root) {
@@ -110,14 +129,18 @@ public class TwoThreeTree<T extends Comparable<T>, E>{
             w.setChildren(x, z, null);
             this.root = w;
         }
+
     }
 
     public void reassignKey(T oldKey) {
         // get leaf with old key
         TwoThreeLeaf<T, E> leaf = this.root.search(new InfiniteKey<>(oldKey));
         E value = leaf.getValue();
+        //print();
         // delete from tree
         this.delete(leaf);
+        print();
+
         // insertion assigns relevant key
         insert(value);
     }

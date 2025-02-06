@@ -61,9 +61,13 @@ public class StockManager {
 
     // 4. Update a stock price
     public void updateStock(String stockId, long timestamp, Float priceDifference) {
+        System.out.println("updating price " + priceDifference);
         Stock stock = this.stockTree.search(stockId);
         FloatString oldKey = this.priceIdKeyManager.extractRawKey(stock);
+        System.out.println(oldKey + " before update");
         stock.updatePrice(new StockUpdate(priceDifference, timestamp));
+        System.out.println(oldKey + " after update");
+        System.out.println(stock.getPrice());
         this.stockList.reassignKey(oldKey);
     }
 
